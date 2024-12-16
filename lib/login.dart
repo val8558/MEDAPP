@@ -13,6 +13,9 @@ class Login extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     double contentHeight = 600;
 
+    TextEditingController user = TextEditingController();
+    TextEditingController password = TextEditingController();
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -30,7 +33,7 @@ class Login extends StatelessWidget {
                 height: contentHeight,
                 child: Column(
                   children: [
-                    Image.asset('assets/logo.png'),
+                    Image.asset('assets/logo.png', height: 100),
                     Text(
                       LoginText.title.toUpperCase(),
                       style: textTheme.titleMedium
@@ -41,11 +44,13 @@ class Login extends StatelessWidget {
                     InputBox(
                       inputs: [
                         InputFieldInfo(
-                          title: LoginText.user
+                          title: LoginText.user,
+                          controller: user
                         ),
                         InputFieldInfo(
                           password: true,
-                          title: LoginText.password
+                          title: LoginText.password,
+                          controller: password
                         ),
                       ],
                       buttons: [
@@ -55,20 +60,27 @@ class Login extends StatelessWidget {
                       ],
                       afterButtons: Column(
                         children: [
-                          Text(
-                            LoginText.forget,
-                            style: textTheme.titleSmall
-                            ?.copyWith(
-                              fontSize: 16
-                            )
+                          InkWell(
+                            child: Text(
+                              LoginText.forget,
+                              style: textTheme.bodySmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            onTap: ()=> print("AAAAAAAAAAAAA")
                           ),
-                          Text(
-                            LoginText.singIn,
-                            style: textTheme.titleSmall
-                            ?.copyWith(
-                              fontSize: 16
-                            )
-                          ),
+                          Text("|", style: textTheme.bodySmall),
+                          InkWell(
+                            child: Text(
+                              LoginText.singIn,
+                              style: textTheme.bodySmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                            onTap: ()=> Navigator.pushNamed(context, '/sing_in')
+                          )
                         ],
                       )
                     ),

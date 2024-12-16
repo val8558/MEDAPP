@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medmaster/firebase_options.dart';
 import 'package:medmaster/login.dart';
+import 'package:medmaster/sing_in.dart';
 import 'package:medmaster/tools/default_scaffold.dart';
 
 void main() async{
@@ -30,9 +31,35 @@ class MyApp extends StatelessWidget {
           secondary = const Color(0xFF003366),
           error = const Color(0xFFFF3A2F);
 
+    Widget baseApp(Widget Function(BuildContext, BoxConstraints) builder){
+      return DefaultScaffold(
+        child: LayoutBuilder(
+          builder: builder
+        )
+      );
+    }
 
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => baseApp(
+          (BuildContext context, BoxConstraints constraints){
+            double width = constraints.maxWidth;
+            double height = constraints.maxHeight;
+
+            return Login(width: width, height: height);
+          }
+        ),
+        '/sing_in': (context) => baseApp(
+          (BuildContext context, BoxConstraints constraints){
+            double width = constraints.maxWidth;
+            double height = constraints.maxHeight;
+
+            return SingIn(width: width, height: height);
+          }
+        ),
+      },
       theme: ThemeData(
         colorScheme: ColorScheme(
           brightness: Brightness.light,
@@ -55,12 +82,12 @@ class MyApp extends StatelessWidget {
           //Body
           bodyLarge: GoogleFonts.exo(
             fontWeight: FontWeight.normal,
-            fontSize: 22,
+            fontSize: 18,
             color: Colors.black
           ),
           bodyMedium: GoogleFonts.exo(
             fontWeight: FontWeight.normal,
-            fontSize: 18,
+            fontSize: 14,
             color: Colors.black
           ),
           bodySmall: GoogleFonts.exo(
@@ -105,7 +132,7 @@ class MyApp extends StatelessWidget {
             textStyle: WidgetStatePropertyAll(
               GoogleFonts.exo(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 14,
               )
             )
           ),
@@ -118,17 +145,6 @@ class MyApp extends StatelessWidget {
         ),*/
         useMaterial3: true,
       ),
-      home: DefaultScaffold(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints){
-            double width = constraints.maxWidth;
-            // ignore: unused_local_variable
-            double height = constraints.maxHeight;
-
-            return Login(width: width, height: height);
-          }
-        )
-      )
     );
   }
 }

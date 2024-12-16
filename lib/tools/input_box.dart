@@ -6,12 +6,16 @@ class InputBox extends StatefulWidget {
   final Widget? afterButtons;
   final List<InputFieldInfo>? inputs;
   final List<TextButtonInfo>? buttons;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
 
   const InputBox({
     this.title,
     this.afterButtons,
     this.inputs,
     this.buttons,
+    this.margin = const EdgeInsets.all(20),
+    this.padding = const EdgeInsets.fromLTRB(30, 20, 30, 20),
     super.key
   });
 
@@ -78,13 +82,13 @@ class _InputBoxState extends State<InputBox> {
     }
 
     List<Widget> children = [];
-    if(super.widget.inputs != null){
-      for(InputFieldInfo input in super.widget.inputs!){
+    if(widget.inputs != null){
+      for(InputFieldInfo input in widget.inputs!){
         children.add(
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Text(
                 input.title,
                 style: textTheme.bodyMedium
@@ -92,7 +96,7 @@ class _InputBoxState extends State<InputBox> {
                   fontWeight: FontWeight.bold
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               SizedBox(
                 width: 250,
                 child: textField(input)
@@ -103,13 +107,13 @@ class _InputBoxState extends State<InputBox> {
       }
     }
 
-    if(super.widget.buttons != null){
+    if(widget.buttons != null){
       List<Widget> buttonsChildren = [];
 
-      for(TextButtonInfo button in super.widget.buttons!){
+      for(TextButtonInfo button in widget.buttons!){
         buttonsChildren.add(
           Padding(
-            padding: const EdgeInsets.fromLTRB(5, 40, 5, 5),
+            padding: const EdgeInsets.fromLTRB(5, 30, 5, 5),
             child: TextButton(
               onPressed: button.onPressed == null
               ? null
@@ -128,22 +132,22 @@ class _InputBoxState extends State<InputBox> {
       );
     }
 
-    if(super.widget.afterButtons != null){
-      children.add(super.widget.afterButtons!);
+    if(widget.afterButtons != null){
+      children.add(widget.afterButtons!);
     }
 
     return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+      margin: widget.margin,
+      padding: widget.padding,
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(10)
       ),
       child: Column(
         children: [
-          if(super.widget.title != null)
+          if(widget.title != null)
           Text(
-            super.widget.title!,
+            widget.title!,
             style: textTheme.titleMedium
             ?.copyWith(
               fontWeight: FontWeight.bold,

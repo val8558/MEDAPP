@@ -8,7 +8,14 @@ class LoginText{
 }
 
 class SingInText{
-  
+  static String name = "Nome";
+  static String user = "Usuário";
+  static String email = "Email";
+  static String repeatEmail = "Repita seu e-mail";
+  static String password = "Senha";
+  static String repeatPass = "Repita sua senha";
+  static String ie = "IE";
+  static String button = "Cadastrar";
 }
 
 class HomeText{
