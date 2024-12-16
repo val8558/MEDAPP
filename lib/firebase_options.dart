@@ -49,21 +49,4 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD_TJR1cOfbHBPulcRQyyYtN8e11xXSgHI',
-    appId: '1:311777033991:android:048d4e5d7cd5666838cfa2',
-    messagingSenderId: '311777033991',
-    projectId: 'medmaster-402cb',
-    storageBucket: 'medmaster-402cb.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCcQl4sOjEG0pcS-BJdne3bIqjOe07k7e0',
-    appId: '1:311777033991:ios:9039553990ae3ca738cfa2',
-    messagingSenderId: '311777033991',
-    projectId: 'medmaster-402cb',
-    storageBucket: 'medmaster-402cb.firebasestorage.app',
-    iosBundleId: 'com.example.medmaster',
-  );
-
 }
