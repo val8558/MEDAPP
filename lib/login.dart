@@ -55,7 +55,8 @@ class Login extends StatelessWidget {
                       ],
                       buttons: [
                         TextButtonInfo(
-                          text: LoginText.button
+                          text: LoginText.button,
+                          onPressed: ()=> Navigator.pushReplacementNamed(context, '/home')
                         )
                       ],
                       afterButtons: Column(

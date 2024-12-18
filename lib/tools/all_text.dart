@@ -19,5 +19,8 @@ class SingInText{
 }
 
 class HomeText{
-  
+  static String hello = "Olá, usuario";
+  static String quiz = "Quiz fixo";
+  static String subQuiz = "Responda as questões por tema";
+  static String buttonQuiz = "Jogar";
 }

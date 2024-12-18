@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medmaster/firebase_options.dart';
+import 'package:medmaster/home.dart';
 import 'package:medmaster/login.dart';
 import 'package:medmaster/sing_in.dart';
 import 'package:medmaster/tools/default_scaffold.dart';
@@ -59,6 +60,14 @@ class MyApp extends StatelessWidget {
             return SingIn(width: width, height: height);
           }
         ),
+        '/home': (context) => baseApp(
+          (BuildContext context, BoxConstraints constraints){
+            double width = constraints.maxWidth;
+            double height = constraints.maxHeight;
+
+            return Home(width: width, height: height);
+          }
+        ),
       },
       theme: ThemeData(
         colorScheme: ColorScheme(
@@ -112,6 +121,23 @@ class MyApp extends StatelessWidget {
           titleSmall: GoogleFonts.exo(
             fontWeight: FontWeight.bold,
             fontSize: 20,
+            color: Colors.black,
+          ),
+
+          //Label
+          labelLarge: GoogleFonts.exo(
+            fontWeight: FontWeight.w300,
+            fontSize: 14,
+            color: Colors.black,
+          ),
+          labelMedium: GoogleFonts.exo(
+            fontWeight: FontWeight.w300,
+            fontSize: 12,
+            color: Colors.black,
+          ),
+          labelSmall: GoogleFonts.exo(
+            fontWeight: FontWeight.w300,
+            fontSize: 10,
             color: Colors.black,
           ),
         ),

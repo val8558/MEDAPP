@@ -10,8 +10,6 @@ class SingIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    TextTheme textTheme = Theme.of(context).textTheme;
-
     TextEditingController name, user, email, repeatEmail, password, repeatPass, ie;
  
     name = TextEditingController();
