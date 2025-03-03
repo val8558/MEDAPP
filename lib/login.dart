@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:medmaster/tools/all_text.dart';
-import 'package:medmaster/tools/input_box.dart';
+import 'package:medapp/tools/all_text.dart';
+import 'package:medapp/tools/input_box.dart';
 
 class Login extends StatelessWidget {
   final double width, height;

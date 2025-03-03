@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medmaster/tools/all_text.dart';
+import 'package:medapp/tools/all_text.dart';
 
 class Home extends StatelessWidget {
   final double width, height;

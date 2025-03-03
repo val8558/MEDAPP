@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medmaster/firebase_options.dart';
-import 'package:medmaster/home.dart';
-import 'package:medmaster/login.dart';
-import 'package:medmaster/sing_in.dart';
-import 'package:medmaster/tools/default_scaffold.dart';
+import 'package:medapp/firebase_options.dart';
+import 'package:medapp/home.dart';
+import 'package:medapp/login.dart';
+import 'package:medapp/sing_in.dart';
+import 'package:medapp/tools/default_scaffold.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

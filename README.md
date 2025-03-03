@@ -1,4 +1,4 @@
-# medmaster
+# medapp
 
 A new Flutter project.
 
