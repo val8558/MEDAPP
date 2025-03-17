@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medapp/chose_theme.dart';
 import 'package:medapp/firebase_options.dart';
 import 'package:medapp/home.dart';
 import 'package:medapp/login.dart';
@@ -30,13 +31,12 @@ class MyApp extends StatelessWidget {
     Color onColor = Colors.black,
           primary = const Color(0xFF0BCEB2),
           secondary = const Color(0xFF003366),
-          error = const Color(0xFFFF3A2F);
+          error = const Color(0xFFFF3A2F),
+          surface = const Color(0xFFF2F2F2);
 
-    Widget baseApp(Widget Function(BuildContext, BoxConstraints) builder){
+    Widget baseApp(Widget child){
       return DefaultScaffold(
-        child: LayoutBuilder(
-          builder: builder
-        )
+        child: child
       );
     }
 
@@ -44,30 +44,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => baseApp(
-          (BuildContext context, BoxConstraints constraints){
-            double width = constraints.maxWidth;
-            double height = constraints.maxHeight;
-
-            return Login(width: width, height: height);
-          }
-        ),
-        '/sing_in': (context) => baseApp(
-          (BuildContext context, BoxConstraints constraints){
-            double width = constraints.maxWidth;
-            double height = constraints.maxHeight;
-
-            return SingIn(width: width, height: height);
-          }
-        ),
-        '/home': (context) => baseApp(
-          (BuildContext context, BoxConstraints constraints){
-            double width = constraints.maxWidth;
-            double height = constraints.maxHeight;
-
-            return Home(width: width, height: height);
-          }
-        ),
+        '/': (context) => baseApp(Login()),
+        '/sing_in': (context) => baseApp(SingIn()),
+        '/home': (context) => baseApp(Home()),
+        '/choseTheme': (context) => baseApp(ChoseTheme()),
       },
       theme: ThemeData(
         colorScheme: ColorScheme(
@@ -82,8 +62,8 @@ class MyApp extends StatelessWidget {
           error: error,
           onError: onColor,
 
-          surface: Colors.white,
-          onSurface: onColor
+          surface: surface,
+          onSurface: onColor,
         ),
         
         //TEXT

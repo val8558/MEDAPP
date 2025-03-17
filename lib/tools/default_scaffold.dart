@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DefaultScaffold extends StatelessWidget {
-  final LayoutBuilder child;
+  final Widget child;
   const DefaultScaffold({
     required this.child,
     super.key
