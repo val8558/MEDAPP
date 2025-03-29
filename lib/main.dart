@@ -5,6 +5,7 @@ import 'package:medapp/chose_theme.dart';
 import 'package:medapp/firebase_options.dart';
 import 'package:medapp/home.dart';
 import 'package:medapp/login.dart';
+import 'package:medapp/quiz.dart';
 import 'package:medapp/sing_in.dart';
 import 'package:medapp/tools/default_scaffold.dart';
 
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
         '/choseTheme': (context) => baseApp(ChoseTheme()),
+        '/quiz': (context) => baseApp(Quiz()),
       },
       theme: ThemeData(
         colorScheme: ColorScheme(
@@ -122,6 +124,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
+        //TEXT BUTTON
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
             minimumSize: const WidgetStatePropertyAll(Size(175, 20)),
@@ -143,7 +146,7 @@ class MyApp extends StatelessWidget {
             )
           ),
         ),
-
+        
         /*textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.grey,
           selectionColor: secondary,

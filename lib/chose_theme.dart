@@ -35,7 +35,7 @@ class ChoseTheme extends StatelessWidget {
                     ),
                   ),                       
                   TextButton(
-                    onPressed: null,
+                    onPressed: ()=> Navigator.pushNamed(context, '/quiz'),
                     child: Text("Jogar")
                   ),
                   TextButton(
@@ -50,7 +50,7 @@ class ChoseTheme extends StatelessWidget {
       );
     }
 
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
