@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +7,7 @@ import 'package:medapp/firebase_options.dart';
 import 'package:medapp/home.dart';
 import 'package:medapp/login.dart';
 import 'package:medapp/quiz.dart';
+import 'package:medapp/server_manager.dart';
 import 'package:medapp/sing_in.dart';
 import 'package:medapp/tools/default_scaffold.dart';
 
@@ -15,7 +17,6 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
-
 }
 
 /*
@@ -45,7 +46,27 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/': (context) => baseApp(Login()),
+        '/':  (context) => StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            
+            if (snapshot.hasData) {
+              return FutureBuilder(
+                future: ServerManager.getUserData(),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return baseApp(Home());
+                }
+              );
+            }
+            if (snapshot.hasError) {
+              return Scaffold(body: Text(snapshot.error.toString()));
+            }
+            return baseApp(Login());
+          },
+        ),
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
         '/choseTheme': (context) => baseApp(ChoseTheme()),

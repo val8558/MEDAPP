@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:medapp/models/user_data.dart';
+import 'package:medapp/server_manager.dart';
 import 'package:medapp/tools/all_text.dart';
 import 'package:medapp/tools/input_box.dart';
+import 'package:medapp/tools/popup.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -12,8 +16,47 @@ class Login extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
     double contentHeight = 600;
 
-    TextEditingController user = TextEditingController();
+    TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
+
+    Future<bool> login() async{
+      if(email.text.isEmpty || password.text.isEmpty){
+        return false;
+      }
+      Popup.load(context);
+      try{
+        bool sucess = await ServerManager.login(
+          email: email.text,
+          password: password.text
+        );
+        if(sucess){
+          UserData? userData = await ServerManager.getUserData();
+          if(context.mounted){
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+          return userData != null;
+        }
+        
+        return false;
+      }
+      on FirebaseAuthException {
+        if(context.mounted){
+          Navigator.pop(context);
+          Popup.alert(
+            context: context,
+            alert: "O login não completado, verique seu email e senha",
+            title: "Erro",
+            buttons: [
+              AlertButton(
+                text: "Ok",
+                onPressed: ()=>Navigator.pop(context)
+              )
+            ]
+          );
+        }
+        return false;
+      }
+    }
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -47,7 +90,7 @@ class Login extends StatelessWidget {
                         inputs: [
                           InputFieldInfo(
                             title: LoginText.user,
-                            controller: user
+                            controller: email
                           ),
                           InputFieldInfo(
                             password: true,
@@ -58,7 +101,7 @@ class Login extends StatelessWidget {
                         buttons: [
                           TextButtonInfo(
                             text: LoginText.button,
-                            onPressed: ()=> Navigator.pushReplacementNamed(context, '/home')
+                            onPressed: ()=> login(),
                           )
                         ],
                         afterButtons: Column(

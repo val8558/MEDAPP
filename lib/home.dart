@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medapp/models/user_data.dart';
 import 'package:medapp/tools/all_text.dart';
 import 'package:medapp/tools/round_card.dart';
 
@@ -71,7 +72,7 @@ class Home extends StatelessWidget {
                 child: Row(
                   children: [
                     const Icon(Icons.person_2_sharp, size: 40),
-                    Text(HomeText.hello, style: textTheme.titleMedium)
+                    Text("${HomeText.hello}, ${UserData().name}", style: textTheme.titleMedium)
                   ],
                 ),
               ),
