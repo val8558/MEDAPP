@@ -49,28 +49,36 @@ class MyApp extends StatelessWidget {
         '/':  (context) => StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            
-            if (snapshot.hasData) {
-              return FutureBuilder(
-                future: ServerManager.getUserData(),
-                builder: (context, snapshot){
-                  if(snapshot.connectionState == ConnectionState.waiting){
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return baseApp(Home());
-                }
-              );
+        
+        if (snapshot.hasData) {
+          return FutureBuilder(
+            future: ServerManager.getUserData(),
+            builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(child: CircularProgressIndicator());
+          }
+          return baseApp(Home());
             }
-            if (snapshot.hasError) {
-              return Scaffold(body: Text(snapshot.error.toString()));
-            }
-            return baseApp(Login());
+          );
+        }
+        if (snapshot.hasError) {
+          return Scaffold(body: Text(snapshot.error.toString()));
+        }
+        return baseApp(Login());
           },
         ),
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
         '/choseTheme': (context) => baseApp(ChoseTheme()),
-        '/quiz': (context) => baseApp(Quiz()),
+        '/quiz': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+          return baseApp(
+            Quiz(
+              infinite: args?['infinite'] ?? true,
+              theme: args?['theme'] ?? '',
+            )
+          );
+        },
       },
       theme: ThemeData(
         colorScheme: ColorScheme(

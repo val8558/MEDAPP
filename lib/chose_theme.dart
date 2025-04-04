@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medapp/models/question_theme_data.dart';
+import 'package:medapp/server_manager.dart';
 import 'package:medapp/tools/round_card.dart';
 
 class ChoseTheme extends StatelessWidget {
@@ -11,7 +13,7 @@ class ChoseTheme extends StatelessWidget {
     // ignore: unused_local_variable
     TextTheme textTheme = Theme.of(context).textTheme;
 
-    RoundCard card(){
+    RoundCard card(String title){
       return RoundCard(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -28,19 +30,26 @@ class ChoseTheme extends StatelessWidget {
                 children: [
                   RichText(
                     text: TextSpan(
-                      text: "Cirurgia",
+                      text: title,
                       style: textTheme.titleSmall?.copyWith(
                         fontSize: 18
                       ),
                     ),
                   ),                       
                   TextButton(
-                    onPressed: ()=> Navigator.pushNamed(context, '/quiz'),
-                    child: Text("Jogar")
+                    onPressed: () => Navigator.pushNamed(
+                      context, 
+                      '/quiz', 
+                      arguments: {
+                        'theme': title,
+                        'infinite': false
+                      }
+                    ),
+                    child: Text("Corrida")
                   ),
                   TextButton(
-                    onPressed: null,
-                    child: Text("Jogar")
+                    onPressed: () => Navigator.pushNamed(context, '/quiz'),
+                    child: Text("Infinito")
                   ),
                 ],
               ),
@@ -83,11 +92,27 @@ class ChoseTheme extends StatelessWidget {
                   ),
                 ), 
               ),
-              card(),
-              card(),
-              card(),
-              card(),
-              card(),
+              FutureBuilder(
+                future: ServerManager.getThemes(),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if(snapshot.hasError){
+                    return Text(snapshot.error.toString());
+                  }
+
+                  List<QuestionThemeData> themes = snapshot.data!;
+                  List<Widget> cards = [];
+                  for (var element in themes) {
+                    cards.add(
+                      card(element.title)
+                    );
+                  }
+
+                  return Column(children: cards);
+                },
+              )
             ],
           ),
         )

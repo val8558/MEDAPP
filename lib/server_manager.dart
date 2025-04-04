@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter/material.dart';
+import 'package:medapp/models/question_data.dart';
+import 'package:medapp/models/question_theme_data.dart';
 import 'package:medapp/models/user_data.dart';
 
 class ServerManager{
@@ -19,13 +21,11 @@ class ServerManager{
     required String ie
   }) async{
     try{
-      print("Criando conta");
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password
       );
 
-      print('salvando dados');
       await fb.collection("users").doc(userCredential.user!.uid)
       .set({
         "name": name,
@@ -74,11 +74,64 @@ class ServerManager{
   static Future<UserData?> getUserData() async{
     try{
       String uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot user = await fb.collection("users").doc(uid).get();
-      Map<String, dynamic> data = user.data() as Map<String, dynamic>;
+      DocumentSnapshot doc = await fb.collection("users").doc(uid).get();
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
       UserData().fromJson(uid, data);
       return UserData();
+    }
+    on FirebaseAuthException catch (e){
+      print("Erro: $e");
+      return null;
+    }
+  }
+
+  static Future<QuestionData?> getQuestionData(String id) async{
+    try{
+      DocumentSnapshot doc = await fb.collection("questions").doc(id).get();
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      return QuestionData(data);
+    }
+    on FirebaseAuthException catch (e){
+      print("Erro: $e");
+      return null;
+    }
+  }
+
+  static Future<List<QuestionData>?> getQuestionsData({String theme = ''}) async{
+    try{
+      Query query = fb.collection("questions");
+      if(theme.isNotEmpty){
+        query = query.where("theme", isEqualTo: theme);
+      }
+      
+      QuerySnapshot querySnapshot = await query.get();
+      List<QuestionData> questions = [];
+
+      for (var element in querySnapshot.docs) {
+        Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+        questions.add(QuestionData(data));
+      }
+
+      return questions;
+    }
+    on FirebaseAuthException catch (e){
+      print("Erro: $e");
+      return null;
+    }
+  }
+
+  static Future<List<QuestionThemeData>?> getThemes() async{
+    try{
+      QuerySnapshot query = await fb.collection("themes").get();
+      List<QuestionThemeData> themes = [];
+      for (var element in query.docs) {
+        Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+        themes.add(QuestionThemeData(data));
+      }
+
+      return themes;
     }
     on FirebaseAuthException catch (e){
       print("Erro: $e");
