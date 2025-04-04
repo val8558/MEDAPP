@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:medapp/models/question_data.dart';
 import 'package:medapp/server_manager.dart';
@@ -18,7 +20,44 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   List<QuestionData> questions = [];
-  QuestionData? question;
+  int index = -1;
+  bool answered = false;
+  int chosenAnswer = -1;
+
+  // For infinite mode
+  int life = 3;
+  // For timed mode
+  int time = 60;
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!widget.infinite) {
+      startTimer(); // Inicie o timer apenas no modo cronometrado
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel(); // Cancele o timer ao sair da tela
+    super.dispose();
+  }
+
+    void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      if (time > 0) {
+        setState(() {
+          time--;
+        });
+      } else {
+        t.cancel();
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +78,11 @@ class _QuizState extends State<Quiz> {
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Row(
           children: [
-            lifeIcon(true),
+            lifeIcon(life > 0),
             const SizedBox(width: 5),
-            lifeIcon(true),
+            lifeIcon(life > 1),
             const SizedBox(width: 5),
-            lifeIcon(false),
+            lifeIcon(life > 2),
           ],
         )
       );
@@ -59,8 +98,8 @@ class _QuizState extends State<Quiz> {
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0.0)
             ),
             child: Slider(
-              value: 50,
-              max: 100,
+              value: time.toDouble(),
+              max: 60,
               min: 0,
               activeColor: colorScheme.primary,
               inactiveColor: Colors.white,
@@ -68,7 +107,7 @@ class _QuizState extends State<Quiz> {
             ),
           ),
           Text(
-            "00:53",
+            "00:${time.toString().padLeft(2, '0')}",
             style: textTheme.titleMedium?.copyWith(
               color: colorScheme.primary,
             )
@@ -77,28 +116,82 @@ class _QuizState extends State<Quiz> {
       );
     }
 
-    RoundCard answerCard(String answer){
-      return RoundCard(
-        padding: const EdgeInsets.fromLTRB(20,15,20,15),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              Icons.circle,
-              color: Colors.grey,
-              size: 20,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                answer,
-                style: textTheme.titleSmall?.copyWith(
-                  fontSize: 16
+    void nextQuestion() {
+      Future.delayed(
+        const Duration(seconds: 1), () {
+          index++;
+          if(index >= questions.length || life <= 0){
+            if(context.mounted){
+              Navigator.pop(context);
+            }
+            return;
+          }
+
+          setState(() {
+            answered = false;
+            chosenAnswer = -1;
+          });
+        }
+      );
+    }
+
+    void answer(int index){
+      if(answered) return;
+
+      setState(() {
+        if(super.widget.infinite
+        && questions[this.index].correct != index){
+          life--;
+        }
+        answered = true;
+        chosenAnswer = index;
+      });
+
+      nextQuestion();
+    }
+
+    Widget answerCard(int index){
+      QuestionData question = questions[this.index];
+      String answerTxt = question.answers[index];
+
+      Color bgColor = Colors.white;
+      Color iconColor = Colors.grey;
+
+      if(answered){
+        if(index == question.correct){
+          bgColor = Colors.green.withAlpha(100);
+          iconColor = Colors.green;
+        }else if(index == chosenAnswer){
+          bgColor = Colors.red.withAlpha(100);
+          iconColor = Colors.red;
+        }
+      }
+
+      return GestureDetector(
+        onTap: () => answer(index),
+        child: RoundCard(
+          color: bgColor,
+          padding: const EdgeInsets.fromLTRB(20,15,20,15),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.circle,
+                color: iconColor,
+                size: 20,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  answerTxt,
+                  style: textTheme.titleSmall?.copyWith(
+                    fontSize: 16
+                  )
                 )
               )
-            )
-          ],
-        )
+            ],
+          )
+        ),
       );
     }
 
@@ -118,12 +211,15 @@ class _QuizState extends State<Quiz> {
           ],
         );
       }
+      if(index >= questions.length){
+        Navigator.pop(context);
+        return Column();
+      }
 
-      question ??= questions.first;
-      int index = questions.indexOf(question!);
-      List<RoundCard> answers = [];
-      for(var element in question!.answers){
-        answers.add(answerCard(element));
+      QuestionData question = questions[index];
+      List<Widget> answers = [];
+      for(int i = 0; i < question.answers.length; i++){
+        answers.add(answerCard(i));
       }
 
       return Column(
@@ -144,7 +240,7 @@ class _QuizState extends State<Quiz> {
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  question!.question,
+                  question.question,
                   style: textTheme.bodyMedium
                 ),
               ],
@@ -199,7 +295,8 @@ class _QuizState extends State<Quiz> {
               }
 
               questions = snapshot.data!;
-              question = questions.first;
+              questions.shuffle();
+              index = 0;
               return body();
             },
           )

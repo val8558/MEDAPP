@@ -55,6 +55,49 @@ class Home extends StatelessWidget {
         ),
       );
     }
+    RoundCard themeCard({
+      required String title,
+      required String subTitle,
+      required Image img,
+      required Function onPressed,
+      bool imgOnLeft = true,
+    }){
+      return RoundCard(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            if(imgOnLeft) img,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: title,
+                    style: textTheme.titleSmall?.copyWith(
+                      fontSize: 18
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "\n$subTitle",
+                        style: textTheme.labelMedium
+                      ),
+                    ]
+                  ),
+                ),
+                const SizedBox(height: 15),                  
+                TextButton(
+                  onPressed: ()=> onPressed.call(),
+                  child: Text(HomeText.buttonQuiz)
+                )
+              ],
+            ),
+            if(!imgOnLeft) img
+          ],
+        )
+      );
+    }
+
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -96,43 +139,34 @@ class Home extends StatelessWidget {
                   ],
                 )
               ),
-              RoundCard(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: HomeText.quiz,
-                            style: textTheme.titleSmall?.copyWith(
-                              fontSize: 18
-                            ),
-                            children: [
-                              TextSpan(
-                                text: "\n${HomeText.subQuiz}",
-                                style: textTheme.labelMedium
-                              ),
-                            ]
-                          ),
-                        ),
-                        const SizedBox(height: 15),                  
-                        TextButton(
-                          onPressed: ()=> Navigator.pushNamed(context, '/choseTheme'),
-                          child: Text(HomeText.buttonQuiz)
-                        )
-                      ],
-                    ),
-                    Image.asset(
-                      'assets/fixed_quiz.png',
-                      height: 120,
-                      alignment: Alignment.centerRight,
-                    ),
-                  ],
-                )
-              )
+              themeCard(
+                title: "QUIZ FIXO",
+                subTitle: "Responda as questões por tema",
+                img: Image.asset(
+                  'assets/fixed_quiz.png',
+                  height: 120,
+                  alignment: Alignment.centerRight,
+                ),
+                imgOnLeft: false,
+                onPressed: () => Navigator.pushNamed(context, '/choseTheme')
+              ),
+              themeCard(
+                title: "QUIZ ALEATÓRIO",
+                subTitle: "Responda questões mistas",
+                img: Image.asset(
+                  'assets/random_quiz.png',
+                  height: 120,
+                  alignment: Alignment.centerRight,
+                ),
+                imgOnLeft: true,
+                onPressed: () => Navigator.pushNamed(
+                  context, 
+                  '/quiz',
+                  arguments: {
+                  'theme': "",
+                  'infinite': false
+                })
+              ),
             ],
           ),
         )
