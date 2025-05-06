@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,26 +45,18 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/':  (context) => baseApp(Login()),/*StreamBuilder(
+        '/':  (context) => StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return FutureBuilder(
-                future: ServerManager.getUserData(),
-                builder: (context, snapshot){
-              if(snapshot.connectionState == ConnectionState.waiting){
-                return const Center(child: CircularProgressIndicator());
-              }
-              return baseApp(Home());
-                }
-              );
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
             }
             if (snapshot.hasError) {
               return Scaffold(body: Text(snapshot.error.toString()));
             }
             return baseApp(Login());
           },
-        ),*/
+        ),
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
         '/fixed_chose_theme': (context) => baseApp(FixedChoseTheme()),

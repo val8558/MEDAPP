@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medapp/models/user_data.dart';
+import 'package:medapp/server_manager.dart';
 import 'package:medapp/tools/all_text.dart';
 import 'package:medapp/tools/round_card.dart';
 
@@ -98,6 +99,15 @@ class Home extends StatelessWidget {
       );
     }
 
+    Row userInfo () {
+      return Row(
+        children: [
+          const Icon(Icons.person_2_sharp, size: 40),
+          Text("${HomeText.hello}, ${UserData().name}", style: textTheme.titleMedium)
+        ],
+      );
+    }
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
@@ -111,11 +121,16 @@ class Home extends StatelessWidget {
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30)
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.person_2_sharp, size: 40),
-                    Text("${HomeText.hello}, ${UserData().name}", style: textTheme.titleMedium)
-                  ],
+                child: UserData().hasSetted()
+                ? userInfo()
+                : FutureBuilder(
+                  future: ServerManager.getUserData(),
+                  builder: (context, snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return userInfo();
+                  }
                 ),
               ),
               RoundCard(
