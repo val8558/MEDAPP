@@ -1,13 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medapp/chose_theme.dart';
 import 'package:medapp/firebase_options.dart';
 import 'package:medapp/home.dart';
 import 'package:medapp/login.dart';
+import 'package:medapp/pre_games/fixed_chose_theme.dart';
 import 'package:medapp/quiz.dart';
-import 'package:medapp/server_manager.dart';
 import 'package:medapp/sing_in.dart';
 import 'package:medapp/tools/default_scaffold.dart';
 
@@ -46,30 +44,29 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       routes: {
-        '/':  (context) => StreamBuilder(
+        '/':  (context) => baseApp(Login()),/*StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-        
-        if (snapshot.hasData) {
-          return FutureBuilder(
-            future: ServerManager.getUserData(),
-            builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return const Center(child: CircularProgressIndicator());
-          }
-          return baseApp(Home());
+            if (snapshot.hasData) {
+              return FutureBuilder(
+                future: ServerManager.getUserData(),
+                builder: (context, snapshot){
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return const Center(child: CircularProgressIndicator());
+              }
+              return baseApp(Home());
+                }
+              );
             }
-          );
-        }
-        if (snapshot.hasError) {
-          return Scaffold(body: Text(snapshot.error.toString()));
-        }
-        return baseApp(Login());
+            if (snapshot.hasError) {
+              return Scaffold(body: Text(snapshot.error.toString()));
+            }
+            return baseApp(Login());
           },
-        ),
+        ),*/
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
-        '/choseTheme': (context) => baseApp(ChoseTheme()),
+        '/fixed_chose_theme': (context) => baseApp(FixedChoseTheme()),
         '/quiz': (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
           return baseApp(

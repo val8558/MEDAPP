@@ -243,6 +243,10 @@ class _QuizState extends State<Quiz> {
                   question.question,
                   style: textTheme.bodyMedium
                 ),
+                if(question.img.isNotEmpty)
+                const SizedBox(height: 30),
+                if(question.img.isNotEmpty)
+                Image.network(question.img)
               ],
             )
           ),

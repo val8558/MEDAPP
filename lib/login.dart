@@ -19,6 +19,24 @@ class Login extends StatelessWidget {
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
 
+    void errorOnLogin(){
+      if(context.mounted){
+        Navigator.pop(context);
+      }
+
+      Popup.alert(
+        context: context,
+        alert: "O login não completado, verique seu email e senha",
+        title: "Erro",
+        buttons: [
+          AlertButton(
+            text: "Ok",
+            onPressed: ()=>Navigator.pop(context)
+          )
+        ]
+      );
+    }
+
     Future<bool> login() async{
       if(email.text.isEmpty || password.text.isEmpty){
         return false;
@@ -35,25 +53,14 @@ class Login extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/home');
           }
           return userData != null;
+        }else{
+          errorOnLogin();
         }
         
         return false;
       }
       on FirebaseAuthException {
-        if(context.mounted){
-          Navigator.pop(context);
-          Popup.alert(
-            context: context,
-            alert: "O login não completado, verique seu email e senha",
-            title: "Erro",
-            buttons: [
-              AlertButton(
-                text: "Ok",
-                onPressed: ()=>Navigator.pop(context)
-              )
-            ]
-          );
-        }
+        errorOnLogin();
         return false;
       }
     }

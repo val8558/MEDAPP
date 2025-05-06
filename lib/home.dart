@@ -98,7 +98,6 @@ class Home extends StatelessWidget {
       );
     }
 
-
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
@@ -148,7 +147,7 @@ class Home extends StatelessWidget {
                   alignment: Alignment.centerRight,
                 ),
                 imgOnLeft: false,
-                onPressed: () => Navigator.pushNamed(context, '/choseTheme')
+                onPressed: () => Navigator.pushNamed(context, '/fixed_chose_theme')
               ),
               themeCard(
                 title: "QUIZ ALEATÓRIO",

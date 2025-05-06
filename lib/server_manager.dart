@@ -122,9 +122,9 @@ class ServerManager{
     }
   }
 
-  static Future<List<QuestionThemeData>?> getThemes() async{
+  static Future<List<QuestionThemeData>?> getThemes(String type) async{
     try{
-      QuerySnapshot query = await fb.collection("themes").get();
+      QuerySnapshot query = await fb.collection("themes").where("type", isEqualTo: type).get();
       List<QuestionThemeData> themes = [];
       for (var element in query.docs) {
         Map<String, dynamic> data = element.data() as Map<String, dynamic>;
