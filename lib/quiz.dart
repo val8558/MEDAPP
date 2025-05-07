@@ -7,7 +7,7 @@ import 'package:medapp/server_manager.dart';
 import 'package:medapp/tools/round_card.dart';
 
 class Quiz extends StatefulWidget {
-  final TypeGames typeGames;
+  final TypeGame typeGames;
   final String theme;
   const Quiz({
     required this.typeGames,
@@ -34,7 +34,7 @@ class _QuizState extends State<Quiz> {
   @override
   void initState() {
     super.initState();
-    if (widget.typeGames == TypeGames.run) {
+    if (widget.typeGames == TypeGame.run) {
       startTimer();
     }
   }
@@ -140,7 +140,7 @@ class _QuizState extends State<Quiz> {
       if(answered) return;
 
       setState(() {
-        if(super.widget.typeGames == TypeGames.infinite
+        if(super.widget.typeGames == TypeGame.infinite
         && questions[this.index].correct != index){
           life--;
         }
@@ -224,10 +224,10 @@ class _QuizState extends State<Quiz> {
       }
       Widget? header;
       switch(super.widget.typeGames){
-        case TypeGames.infinite:
+        case TypeGame.infinite:
           header = lifeRemain();
           break;
-        case TypeGames.run:
+        case TypeGame.run:
           header = timeRemain();
           break;
         default:

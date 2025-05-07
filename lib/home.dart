@@ -205,7 +205,7 @@ class Home extends StatelessWidget {
                   alignment: Alignment.centerRight,
                 ),
                 imgOnLeft: true,
-                onPressed: () => Navigator.pushNamed(context, '/flashcard_chose_theme')
+                onPressed: () => Navigator.pushNamed(context, '/flash_chose_theme')
               ),
             ],
           ),

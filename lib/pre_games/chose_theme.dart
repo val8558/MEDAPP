@@ -23,45 +23,41 @@ class ChoseTheme extends DefaultTheme {
     // ignore: unused_local_variable
     TextTheme textTheme = Theme.of(context).textTheme;
 
+    String getNameButton(TypeGame game){
+      switch(game){
+          case TypeGame.run:
+            return "Corrida";
+          case TypeGame.infinite:
+            return "Infinito";
+          case TypeGame.flash:
+            return "Flashcard";
+          default:
+           return "Jogar";
+      }
+    }
+
     RoundCard card(QuestionThemeData question){
       List<TextButton> buttons = [];
 
-      if(question.games.contains(TypeGames.run)){
+      for(TypeGame game in question.games){
+        String name = getNameButton(game);
+
+        if(question.games.length == 1){
+          name = "Jogar";
+        }
+
         buttons.add(
           TextButton(
             onPressed: () => Navigator.pushNamed(
-              context, 
+              context,
               '/quiz', 
               arguments: {
-                'type': TypeGames.run,
+                'type': game,
                 'theme': question.id,
               }
             ),
-            child: Text("Corrida")
+            child: Text(name)
           )
-        );
-      }
-
-      if(question.games.contains(TypeGames.infinite)){
-        buttons.add(
-          TextButton(
-            onPressed: () => Navigator.pushNamed(
-              context, '/quiz',
-              arguments: {
-                'type': TypeGames.run,
-                'theme': question.id,
-              }
-            ),
-            child: Text("Infinito")
-          ),
-        );
-      }
-
-      if(buttons.length == 1){
-        var onPressed = buttons[0].onPressed;
-        buttons[0] = TextButton(
-          onPressed: onPressed,
-          child: Text("Jogar")
         );
       }
 

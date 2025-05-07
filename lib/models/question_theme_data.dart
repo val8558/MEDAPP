@@ -7,13 +7,13 @@ class QuestionThemeData {
       data['games'] = List<String>.from(data['games']).map((theme) {
         switch (theme) {
           case 'infinite':
-        return TypeGames.infinite;
+            return TypeGame.infinite;
           case 'run':
-        return TypeGames.run;
+            return TypeGame.run;
           case 'flash':
-        return TypeGames.flash;
+            return TypeGame.flash;
           default:
-        throw ArgumentError('Invalid theme value: $theme');
+            return TypeGame.normal;
         }
       }).toList();
     }
@@ -23,10 +23,11 @@ class QuestionThemeData {
   String get img => data['img'] ?? '';
   String get title => data['title'] ?? '';
   String get subTitle => data['sub_title'] ?? '';
-  List<TypeGames> get games => data['games'] ?? [];
+  List<TypeGame> get games => data['games'] ?? [];
 }
 
-enum TypeGames {
+enum TypeGame {
+  normal,
   infinite,
   run,
   flash,
