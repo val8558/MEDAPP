@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:medapp/models/question_data.dart';
+import 'package:medapp/models/question_theme_data.dart';
 import 'package:medapp/server_manager.dart';
 import 'package:medapp/tools/round_card.dart';
 
 class Quiz extends StatefulWidget {
-  final bool infinite;
+  final TypeGames typeGames;
   final String theme;
   const Quiz({
-    required this.infinite,
+    required this.typeGames,
     this.theme = '',
     super.key
   });
@@ -33,8 +34,8 @@ class _QuizState extends State<Quiz> {
   @override
   void initState() {
     super.initState();
-    if (!widget.infinite) {
-      startTimer(); // Inicie o timer apenas no modo cronometrado
+    if (widget.typeGames == TypeGames.run) {
+      startTimer();
     }
   }
 
@@ -139,7 +140,7 @@ class _QuizState extends State<Quiz> {
       if(answered) return;
 
       setState(() {
-        if(super.widget.infinite
+        if(super.widget.typeGames == TypeGames.infinite
         && questions[this.index].correct != index){
           life--;
         }
@@ -221,12 +222,24 @@ class _QuizState extends State<Quiz> {
       for(int i = 0; i < question.answers.length; i++){
         answers.add(answerCard(i));
       }
+      Widget? header;
+      switch(super.widget.typeGames){
+        case TypeGames.infinite:
+          header = lifeRemain();
+          break;
+        case TypeGames.run:
+          header = timeRemain();
+          break;
+        default:
+          header = null;
+          break;
+      }
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          super.widget.infinite? lifeRemain(): timeRemain(),
+          if(header != null) header,
           const SizedBox(height: 20),
           RoundCard(
             padding: const EdgeInsets.all(20),

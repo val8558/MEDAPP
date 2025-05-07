@@ -71,8 +71,8 @@ class MyApp extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
           return baseApp(
             Quiz(
-              infinite: args?['infinite'] ?? true,
-              theme: args?['theme'] ?? '',
+              typeGames: args!['type'],
+              theme: args['theme'] ?? '',
             )
           );
         },

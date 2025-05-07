@@ -26,15 +26,15 @@ class ChoseTheme extends DefaultTheme {
     RoundCard card(QuestionThemeData question){
       List<TextButton> buttons = [];
 
-      if(question.games.contains("run")){
+      if(question.games.contains(TypeGames.run)){
         buttons.add(
           TextButton(
             onPressed: () => Navigator.pushNamed(
               context, 
               '/quiz', 
               arguments: {
-                'theme': title,
-                'infinite': false
+                'type': TypeGames.run,
+                'theme': question.id,
               }
             ),
             child: Text("Corrida")
@@ -42,11 +42,15 @@ class ChoseTheme extends DefaultTheme {
         );
       }
 
-      if(question.games.contains("infinite")){
+      if(question.games.contains(TypeGames.infinite)){
         buttons.add(
           TextButton(
             onPressed: () => Navigator.pushNamed(
-              context, '/quiz'
+              context, '/quiz',
+              arguments: {
+                'type': TypeGames.run,
+                'theme': question.id,
+              }
             ),
             child: Text("Infinito")
           ),

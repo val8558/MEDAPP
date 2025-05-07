@@ -4,7 +4,18 @@ class QuestionThemeData {
 
   QuestionThemeData(this.id, this.data){
     if(data['games'] != null && data['games'] is! List<String>){
-      data['games'] = List<String>.from(data['games']);
+      data['games'] = List<String>.from(data['games']).map((theme) {
+        switch (theme) {
+          case 'infinite':
+        return TypeGames.infinite;
+          case 'run':
+        return TypeGames.run;
+          case 'flash':
+        return TypeGames.flash;
+          default:
+        throw ArgumentError('Invalid theme value: $theme');
+        }
+      }).toList();
     }
   }
 
@@ -12,5 +23,11 @@ class QuestionThemeData {
   String get img => data['img'] ?? '';
   String get title => data['title'] ?? '';
   String get subTitle => data['sub_title'] ?? '';
-  List<String> get games => data['games'] ?? [];
+  List<TypeGames> get games => data['games'] ?? [];
+}
+
+enum TypeGames {
+  infinite,
+  run,
+  flash,
 }
