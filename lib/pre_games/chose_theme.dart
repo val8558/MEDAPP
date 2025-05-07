@@ -23,7 +23,44 @@ class ChoseTheme extends DefaultTheme {
     // ignore: unused_local_variable
     TextTheme textTheme = Theme.of(context).textTheme;
 
-    RoundCard card(String title){
+    RoundCard card(QuestionThemeData question){
+      List<TextButton> buttons = [];
+
+      if(question.games.contains("run")){
+        buttons.add(
+          TextButton(
+            onPressed: () => Navigator.pushNamed(
+              context, 
+              '/quiz', 
+              arguments: {
+                'theme': title,
+                'infinite': false
+              }
+            ),
+            child: Text("Corrida")
+          )
+        );
+      }
+
+      if(question.games.contains("infinite")){
+        buttons.add(
+          TextButton(
+            onPressed: () => Navigator.pushNamed(
+              context, '/quiz'
+            ),
+            child: Text("Infinito")
+          ),
+        );
+      }
+
+      if(buttons.length == 1){
+        var onPressed = buttons[0].onPressed;
+        buttons[0] = TextButton(
+          onPressed: onPressed,
+          child: Text("Jogar")
+        );
+      }
+
       return RoundCard(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -36,27 +73,21 @@ class ChoseTheme extends DefaultTheme {
                 children: [
                   RichText(
                     text: TextSpan(
-                      text: title,
+                      text: question.title,
                       style: textTheme.titleSmall?.copyWith(
                         fontSize: 18
                       ),
+                      children: [
+                        if(question.subTitle.isNotEmpty)
+                        TextSpan(
+                          text: "\n${question.subTitle}",
+                          style: textTheme.labelMedium
+                        ),
+                      ]
                     ),
-                  ),                       
-                  TextButton(
-                    onPressed: () => Navigator.pushNamed(
-                      context, 
-                      '/quiz', 
-                      arguments: {
-                        'theme': title,
-                        'infinite': false
-                      }
-                    ),
-                    child: Text("Corrida")
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/quiz'),
-                    child: Text("Infinito")
-                  ),
+                  const SizedBox(height: 15),
+                  Column(children: buttons)
                 ],
               ),
             ),
@@ -84,7 +115,7 @@ class ChoseTheme extends DefaultTheme {
           List<Widget> cards = [];
           for (var element in themes) {
             cards.add(
-              card(element.title)
+              card(element)
             );
           }
 

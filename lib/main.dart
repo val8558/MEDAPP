@@ -6,6 +6,7 @@ import 'package:medapp/firebase_options.dart';
 import 'package:medapp/home.dart';
 import 'package:medapp/login.dart';
 import 'package:medapp/pre_games/fixed_chose_theme.dart';
+import 'package:medapp/pre_games/trail_chose_theme.dart';
 import 'package:medapp/quiz.dart';
 import 'package:medapp/sing_in.dart';
 import 'package:medapp/tools/default_scaffold.dart';
@@ -54,12 +55,18 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasError) {
               return Scaffold(body: Text(snapshot.error.toString()));
             }
-            return baseApp(Login());
+
+            if (snapshot.hasData) {
+              return baseApp(Home());
+            } else {
+              return baseApp(Login());
+            }
           },
         ),
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
         '/fixed_chose_theme': (context) => baseApp(FixedChoseTheme()),
+        '/trail_chose_theme': (context) => baseApp(TrailChoseTheme()),
         '/quiz': (context) {
           final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
           return baseApp(

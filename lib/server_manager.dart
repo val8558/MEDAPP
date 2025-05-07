@@ -103,7 +103,7 @@ class ServerManager{
     try{
       Query query = fb.collection("questions");
       if(theme.isNotEmpty){
-        query = query.where("theme", isEqualTo: theme);
+        query = query.where("theme", arrayContains: theme);
       }
       
       QuerySnapshot querySnapshot = await query.get();
@@ -128,7 +128,7 @@ class ServerManager{
       List<QuestionThemeData> themes = [];
       for (var element in query.docs) {
         Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-        themes.add(QuestionThemeData(data));
+        themes.add(QuestionThemeData(element.id, data));
       }
 
       return themes;

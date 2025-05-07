@@ -5,8 +5,8 @@ class QuestionData{
     if(data['answers'] != null && data['answers'] is! List<String>){
       data['answers'] = List<String>.from(data['answers']);
     }
-    if(data['type'] != null && data['type'] is! List<String>){
-      data['type'] = List<String>.from(data['type']);
+    if(data['theme'] != null && data['theme'] is! List<String>){
+      data['theme'] = List<String>.from(data['theme']);
     }
   }
 
@@ -14,6 +14,5 @@ class QuestionData{
   int get correct => data['correct'] ?? -1;
   String get img => data['img'] ?? "";
   String get question => data['question'] ?? "Curso não encontrado";
-  String get theme => data['theme'] ?? "";
-  List<String> get type => data['type'] ?? [];
+  List<String> get theme => data['theme'] ?? [];
 }

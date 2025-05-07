@@ -1,6 +1,8 @@
 class UserData {
   static final UserData _instance = UserData._internal();
 
+  bool initialized = false;
+
   late String uid;
   late String name;
   late String user;
@@ -14,8 +16,8 @@ class UserData {
     return _instance;
   }
 
-  bool hasSetted(){
-    return uid.isEmpty;
+  bool hasInitialized(){
+    return initialized;
   }
 
   void initialize({
@@ -26,6 +28,7 @@ class UserData {
     required String ie,
     String photo = "",
   }) {
+    initialized = true;
     this.uid = uid;
     this.name = name;
     this.user = user;

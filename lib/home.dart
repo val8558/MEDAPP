@@ -68,31 +68,35 @@ class Home extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             if(imgOnLeft) img,
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    text: title,
-                    style: textTheme.titleSmall?.copyWith(
-                      fontSize: 18
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "\n$subTitle",
-                        style: textTheme.labelMedium
+            if(imgOnLeft) const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: title,
+                      style: textTheme.titleSmall?.copyWith(
+                        fontSize: 18
                       ),
-                    ]
+                      children: [
+                        TextSpan(
+                          text: "\n$subTitle",
+                          style: textTheme.labelMedium
+                        ),
+                      ]
+                    ),
                   ),
-                ),
-                const SizedBox(height: 15),                  
-                TextButton(
-                  onPressed: ()=> onPressed.call(),
-                  child: Text(HomeText.buttonQuiz)
-                )
-              ],
+                  const SizedBox(height: 15),                
+                  TextButton(
+                    onPressed: ()=> onPressed.call(),
+                    child: Text(HomeText.buttonQuiz)
+                  )
+                ],
+              ),
             ),
+            if(!imgOnLeft) const SizedBox(width: 15),
             if(!imgOnLeft) img
           ],
         )
@@ -121,7 +125,7 @@ class Home extends StatelessWidget {
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30)
                 ),
-                child: UserData().hasSetted()
+                child: UserData().hasInitialized()
                 ? userInfo()
                 : FutureBuilder(
                   future: ServerManager.getUserData(),
@@ -180,6 +184,28 @@ class Home extends StatelessWidget {
                   'theme': "",
                   'infinite': false
                 })
+              ),
+              themeCard(
+                title: "MODO TRILHA",
+                subTitle: "Escolha uma trilha para estudar",
+                img: Image.asset(
+                  'assets/trail_mode.png',
+                  height: 120,
+                  alignment: Alignment.centerRight,
+                ),
+                imgOnLeft: false,
+                onPressed: () => Navigator.pushNamed(context, '/trail_chose_theme')
+              ),
+              themeCard(
+                title: "FLASHCARDS",
+                subTitle: "Flashcards para você testa seu conhecimento",
+                img: Image.asset(
+                  'assets/Flashcards.png',
+                  height: 120,
+                  alignment: Alignment.centerRight,
+                ),
+                imgOnLeft: true,
+                onPressed: () => Navigator.pushNamed(context, '/flashcard_chose_theme')
               ),
             ],
           ),
