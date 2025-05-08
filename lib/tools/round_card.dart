@@ -5,6 +5,7 @@ class RoundCard extends StatelessWidget {
   final EdgeInsets margin;
   final EdgeInsets padding;
   final BorderRadius border;
+  final double? width, height;
   final Widget child;
   const RoundCard({
       this.color = Colors.white,
@@ -13,6 +14,8 @@ class RoundCard extends StatelessWidget {
       this.border = const BorderRadius.all(
         Radius.circular(30)
       ),
+      this.width,
+      this.height,
       required this.child,
       super.key
     }
@@ -21,6 +24,8 @@ class RoundCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(

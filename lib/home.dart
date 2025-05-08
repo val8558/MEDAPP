@@ -177,13 +177,7 @@ class Home extends StatelessWidget {
                   alignment: Alignment.centerRight,
                 ),
                 imgOnLeft: true,
-                onPressed: () => Navigator.pushNamed(
-                  context, 
-                  '/quiz',
-                  arguments: {
-                  'theme': "",
-                  'infinite': false
-                })
+                onPressed: () => Navigator.pushNamed(context, '/random_chose_theme')
               ),
               themeCard(
                 title: "MODO TRILHA",

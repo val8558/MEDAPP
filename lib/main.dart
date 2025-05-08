@@ -7,6 +7,7 @@ import 'package:medapp/home.dart';
 import 'package:medapp/login.dart';
 import 'package:medapp/pre_games/fixed_chose_theme.dart';
 import 'package:medapp/pre_games/flash_chose_theme.dart';
+import 'package:medapp/pre_games/random_chose_theme.dart';
 import 'package:medapp/pre_games/trail_chose_theme.dart';
 import 'package:medapp/quiz/quiz.dart';
 import 'package:medapp/sing_in.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
         '/sing_in': (context) => baseApp(SingIn()),
         '/home': (context) => baseApp(Home()),
         '/fixed_chose_theme': (context) => baseApp(FixedChoseTheme()),
+        '/random_chose_theme': (context) => baseApp(RandomChoseTheme()),
         '/trail_chose_theme': (context) => baseApp(TrailChoseTheme()),
         '/flash_chose_theme': (context) => baseApp(FlashChoseTheme()),
         '/quiz': (context) {
