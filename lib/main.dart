@@ -10,6 +10,7 @@ import 'package:medapp/pre_games/flash_chose_theme.dart';
 import 'package:medapp/pre_games/random_chose_theme.dart';
 import 'package:medapp/pre_games/trail_chose_theme.dart';
 import 'package:medapp/quiz/quiz.dart';
+import 'package:medapp/score.dart';
 import 'package:medapp/sing_in.dart';
 import 'package:medapp/tools/default_scaffold.dart';
 
@@ -81,6 +82,13 @@ class MyApp extends StatelessWidget {
             )
           );
         },
+        '/score': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+          return baseApp(Score(
+            questions: args!['questions'] ?? 0,
+            correctAnswers: args['answers'] ?? 0,
+          ));
+        }
       },
       theme: ThemeData(
         colorScheme: ColorScheme(

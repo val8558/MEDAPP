@@ -26,6 +26,7 @@ class QuizBodyState extends State<QuizBody> {
   int index = -1;
   bool answered = false;
   int chosenAnswer = -1;
+  int correctAnswers = 0;
   ValueNotifier<int>? life;
 
   void nextQuestion() {
@@ -68,7 +69,14 @@ class QuizBodyState extends State<QuizBody> {
           index++;
           if(index >= questions.length){
             if(context.mounted){
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(
+                context,
+                '/score', 
+                arguments: {
+                  'questions': questions.length,
+                  'answers': correctAnswers,
+                }
+              );
             }
             return;
           }
@@ -85,8 +93,10 @@ class QuizBodyState extends State<QuizBody> {
       if (answered) return;
 
       setState(() {
-        if (life != null && questions[this.index].correct != index) {
-          life!.value--;
+        if(questions[this.index].correct == index){
+          correctAnswers++;
+        }else{
+          if (life != null) life!.value--;
         }
         answered = true;
         chosenAnswer = index;
