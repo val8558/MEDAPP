@@ -8,7 +8,7 @@ import 'package:medapp/login.dart';
 import 'package:medapp/pre_games/fixed_chose_theme.dart';
 import 'package:medapp/pre_games/flash_chose_theme.dart';
 import 'package:medapp/pre_games/trail_chose_theme.dart';
-import 'package:medapp/quiz.dart';
+import 'package:medapp/quiz/quiz.dart';
 import 'package:medapp/sing_in.dart';
 import 'package:medapp/tools/default_scaffold.dart';
 
@@ -73,8 +73,9 @@ class MyApp extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
           return baseApp(
             Quiz(
-              typeGames: args!['type'],
+              typeGame: args!['type'],
               theme: args['theme'] ?? '',
+              maxAlternative: args['max'] ?? 4,
             )
           );
         },

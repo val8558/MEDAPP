@@ -45,16 +45,16 @@ class ChoseTheme extends DefaultTheme {
         if(question.games.length == 1){
           name = "Jogar";
         }
-
+        
+        var arguments = { 'type': game,'theme': question.id };
+        if(game == TypeGame.flash) arguments['max'] = 2;
+        
         buttons.add(
           TextButton(
             onPressed: () => Navigator.pushNamed(
               context,
               '/quiz', 
-              arguments: {
-                'type': game,
-                'theme': question.id,
-              }
+              arguments: arguments
             ),
             child: Text(name)
           )
