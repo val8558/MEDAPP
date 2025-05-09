@@ -86,6 +86,31 @@ class ServerManager{
     }
   }
 
+  static Future<Map<int, List<int>>> getUsage(String year) async{
+    try{
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot doc = await fb.collection("users").doc(uid).collection('usage').doc(year).get();
+      if (!doc.exists) {
+        return {};
+      }
+
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      Map<int, List<int>> usageMap = {};
+
+      data.forEach((key, value) {
+        int month = int.parse(key);
+        List<int> days = List<int>.from(value);
+        usageMap[month] = days;
+      });
+
+      return usageMap;
+    }
+    on FirebaseAuthException catch (e){
+      print("Erro: $e");
+      return {};
+    }
+  }
+
   static Future<QuestionData?> getQuestionData(String id) async{
     try{
       DocumentSnapshot doc = await fb.collection("questions").doc(id).get();
