@@ -87,6 +87,7 @@ class MyApp extends StatelessWidget {
           return baseApp(Score(
             questions: args!['questions'] ?? 0,
             correctAnswers: args['answers'] ?? 0,
+            data: args['data'] ?? {},
           ));
         }
       },

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter/material.dart';
+import 'package:medapp/home.dart';
 import 'package:medapp/models/question_data.dart';
 import 'package:medapp/models/question_theme_data.dart';
 import 'package:medapp/models/user_data.dart';
@@ -111,12 +112,43 @@ class ServerManager{
     }
   }
 
+  static Future<bool> setUsage(Map<String, dynamic> data) async{
+    int day = DateTime.now().day;
+    int month = DateTime.now().month;
+    String year = DateTime.now().year.toString();
+
+    List<int> daysUsed = Home.usage[DateTime.now().month] ?? [];
+    if(!daysUsed.contains(day)){
+      daysUsed.add(day);
+      try{
+        String key = month.toString().padLeft(2, '0');
+        await fb.collection("users").doc(uid).collection('usage').doc(year).update({
+          key: FieldValue.arrayUnion([day])
+        });
+      }
+      on FirebaseAuthException catch (e){
+        print("Erro: $e");
+        return false;
+      }
+    }
+
+    try{
+      data["date"] = FieldValue.serverTimestamp();
+      await fb.collection("users").doc(uid).collection('usage').doc(year).collection("statistics").add(data);
+      return true;
+    }
+    on FirebaseAuthException catch (e){
+      print("Erro: $e");
+      return false;
+    }
+  }
+
   static Future<QuestionData?> getQuestionData(String id) async{
     try{
       DocumentSnapshot doc = await fb.collection("questions").doc(id).get();
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-      return QuestionData(data);
+      return QuestionData(doc.id, data);
     }
     on FirebaseAuthException catch (e){
       print("Erro: $e");
@@ -136,7 +168,7 @@ class ServerManager{
 
       for (var element in querySnapshot.docs) {
         Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-        questions.add(QuestionData(data));
+        questions.add(QuestionData(element.id, data));
       }
 
       return questions;

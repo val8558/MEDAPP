@@ -1,7 +1,8 @@
 class QuestionData{
+  final String id;
   final Map data;
 
-  QuestionData(this.data){
+  QuestionData(this.id, this.data){
     if(data['answers'] != null && data['answers'] is! List<String>){
       data['answers'] = List<String>.from(data['answers']);
     }

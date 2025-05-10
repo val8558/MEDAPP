@@ -76,7 +76,7 @@ class Home extends StatelessWidget {
       );
     }
 
-    Column dates() {
+    RoundCard dates() {
       List<int> daysUsed = usage[DateTime.now().month] ?? [];
 
       List<Container> dayCards = [];
@@ -87,15 +87,23 @@ class Home extends StatelessWidget {
         dayCards.add(dayCard(days[i], weekDays[i], active: active));
       }
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(getCurrentDay(), style: textTheme.titleSmall),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: dayCards
-          )
-        ]
+      return RoundCard(
+        padding: const EdgeInsets.fromLTRB(30, 20, 30, 15),
+        margin: const EdgeInsets.only(bottom: 10, top: 10),
+        border: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30)
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(getCurrentDay(), style: textTheme.titleSmall),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: dayCards
+            )
+          ]
+        )
       );
     }
 
@@ -181,7 +189,7 @@ class Home extends StatelessWidget {
                 ),
               ),
               usage.isNotEmpty
-              ? RoundCard(child: dates())
+              ? dates()
               : FutureBuilder(
                   future: ServerManager.getUsage(DateTime.now().year.toString()),
                   builder: (context, snapshot){

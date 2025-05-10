@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:medapp/server_manager.dart';
 
 class Score extends StatelessWidget {
   final int questions;
   final int correctAnswers;
+  final Map<String, dynamic> data;
   const Score({
     required this.questions,
     required this.correctAnswers,
+    this.data = const {},
     super.key
   });
 
@@ -17,10 +20,8 @@ class Score extends StatelessWidget {
     // ignore: unused_local_variable
     TextTheme textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      body: SafeArea(
-        child: Stack(
+    Widget body () {
+      return Stack(
           children: [
             ClipPath(
               clipper: ArcClipper(),
@@ -73,7 +74,25 @@ class Score extends StatelessWidget {
               ),
             )
           ]
-        )
+        );
+    }
+
+    return Scaffold(
+      backgroundColor: colorScheme.surface,
+      body: SafeArea(
+        child: data.isEmpty
+        ? body()
+        : FutureBuilder(
+          future: ServerManager.setUsage(data),
+          builder: (context, snapshot){
+            data.clear();
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            return body();
+          }
+        ),
       )
     );
   }

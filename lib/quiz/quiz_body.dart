@@ -28,6 +28,9 @@ class QuizBodyState extends State<QuizBody> {
   int chosenAnswer = -1;
   int correctAnswers = 0;
   ValueNotifier<int>? life;
+  bool ended = false;
+
+  Map<String, Map<String, dynamic>> userAnswers = {};
 
   void nextQuestion() {
       if (index < questions.length - 1) {
@@ -64,17 +67,27 @@ class QuizBodyState extends State<QuizBody> {
     life = super.widget.life;
 
     void nextQuestion() {
+      if(ended) return;
+
       Future.delayed(
         const Duration(seconds: 1), () {
           index++;
           if(index >= questions.length){
+            ended = true;
             if(context.mounted){
+              Map<String, dynamic> statistics = {
+                'type_game': super.widget.typeGame.toString(),
+                'theme': super.widget.theme,
+                'answers': userAnswers,
+              };
+
               Navigator.pushReplacementNamed(
                 context,
                 '/score', 
                 arguments: {
                   'questions': questions.length,
                   'answers': correctAnswers,
+                  'data': statistics
                 }
               );
             }
@@ -92,8 +105,17 @@ class QuizBodyState extends State<QuizBody> {
     void answer(int index) {
       if (answered) return;
 
+      QuestionData question = questions[this.index];
+      bool isCorrect = question.correct == index;
+
+      userAnswers[question.id] = {
+        "chosen_id": index,
+        "correct_id": question.correct,
+        "is_correct": isCorrect,
+      };
+
       setState(() {
-        if(questions[this.index].correct == index){
+        if(isCorrect){
           correctAnswers++;
         }else{
           if (life != null) life!.value--;
